@@ -1,0 +1,16 @@
+version: '3'
+services:
+  deepict_val:
+    container_name: deepict_val
+    image: 55d824a827f8
+    ipc: host
+    command: /bin/bash
+    stdin_open: true 
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+
