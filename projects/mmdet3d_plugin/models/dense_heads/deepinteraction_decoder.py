@@ -10,7 +10,7 @@ from mmdet3d.core import (circle_nms, draw_heatmap_gaussian, gaussian_radius,
                           xywhr2xyxyr, PseudoSampler)
 from mmdet3d.models.builder import HEADS, build_loss
 from mmdet3d.models.utils import clip_sigmoid
-from mmdet3d.ops.iou3d.iou3d_utils import nms_gpu
+from mmdet3d.ops import nms
 from mmdet.core import build_bbox_coder, multi_apply, build_assigner, build_sampler, AssignResult
 from projects.mmdet3d_plugin.models.utils.decoder_utils import ImageRCNNBlock, PointRCNNBlock, PositionEmbeddingLearned, TransformerDecoderLayer, FFN
 import pdb
@@ -610,7 +610,7 @@ class DeepInteractionDecoder(nn.Module):
                             else:
                                 boxes_for_nms = xywhr2xyxyr(img_metas[i]['box_type_3d'](boxes3d[task_mask][:, :7], 7).bev)
                                 top_scores = scores[task_mask]
-                                task_keep_indices = nms_gpu(
+                                task_keep_indices = nms(
                                     boxes_for_nms,
                                     top_scores,
                                     thresh=task['radius'],
